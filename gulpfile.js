@@ -1,12 +1,17 @@
 const gulp = require('gulp')
 const sass = require('gulp-sass')
 const concat = require('gulp-concat')
+const autoprefixer = require('gulp-autoprefixer')
 const browserSync = require('browser-sync').create()
 
 gulp.task('sass', function () {
   return gulp.src('./scss/main.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./css'))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(browserSync.stream())
 })
 
