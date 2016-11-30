@@ -1,11 +1,19 @@
 const gulp = require('gulp')
 const sass = require('gulp-sass')
+const concat = require('gulp-concat')
 const browserSync = require('browser-sync').create()
 
 gulp.task('sass', function () {
   return gulp.src('./scss/main.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./css'))
+    .pipe(browserSync.stream())
+})
+
+gulp.task('scripts', function () {
+  return gulp.src('./js/*.js')
+    .pipe(concat('main.js'))
+    .pipe(gulp.dest('./js/min'))
     .pipe(browserSync.stream())
 })
 
@@ -16,6 +24,7 @@ gulp.task('serve', ['sass'], function () {
     open: false
   })
 
+  gulp.watch('js/*.js', ['scripts'])
   gulp.watch('scss/**/*.scss', ['sass'])
   gulp.watch(['components/**/*.php', 'components/**/*.html']).on('change', browserSync.reload)
 })
